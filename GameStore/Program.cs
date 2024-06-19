@@ -1,5 +1,6 @@
 using GameStore.Data;
 using GameStore.Endpoints;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,5 +36,4 @@ app.mapRouteEndpoints();
 app.MigrateDb();
 
 app.Run();
-
 
