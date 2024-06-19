@@ -1,0 +1,32 @@
+###
+Get http://localhost:5062
+
+###
+Get http://localhost:5062/games
+
+###
+Get http://localhost:5062/games/2
+
+###
+Post  http://localhost:5062/games
+Content-Type: application/json
+
+{
+    "name":"Ninja 2",
+    "genre":"Fighting",
+    "price":20.55,
+    "releasedate":"2010-01-01"
+
+}
+
+###
+Put  http://localhost:5062/games/2
+Content-Type: application/json
+
+{
+    "name":"Ninja 2",
+    "genre":"Fighting",
+    "price":20.55,
+    "releasedate":"2010-01-01"
+
+}
