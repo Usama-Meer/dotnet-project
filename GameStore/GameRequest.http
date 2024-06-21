@@ -12,8 +12,8 @@ Post  http://localhost:5062/games
 Content-Type: application/json
 
 {
-    "name":"Ninja 2",
-    "genreid":2,
+    "name":"KO Fighter",
+    "genreid":1,
     "price":20.55,
     "releasedate":"2010-01-01"
 

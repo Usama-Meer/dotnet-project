@@ -2,6 +2,7 @@
 using GameStore.Data;
 using GameStore.Dtos;
 using GameStore.Entities;
+using GameStore.Mapping;
 namespace GameStore.Endpoints;
 
 public static class GameEndpoints
@@ -16,7 +17,7 @@ public static class GameEndpoints
             new DateOnly(2010,01,01)
         ),
         new (
-            2,
+            4,
             "Street Fighter II",
             "Fighting",
             30.99M,
@@ -61,13 +62,23 @@ public static class GameEndpoints
             //     newGame.ReleaseDate
             // );
 
-            Game game=new(){
-                Name=newGame.Name,
-                Genre=dbContext.Genres.Find(newGame.GenreId),
-                GenreId=newGame.GenreId,
-                Price=newGame.Price,
-                ReleaseDate=newGame.ReleaseDate
-            };
+
+            /* This is moved to the gameMapping file and now will be called using the ToEntity method*/
+            
+            // Game game=new(){
+            //     Name=newGame.Name,
+            //     Genre=dbContext.Genres.Find(newGame.GenreId),
+            //     GenreId=newGame.GenreId,
+            //     Price=newGame.Price,
+            //     ReleaseDate=newGame.ReleaseDate
+            // };
+
+            
+            //using this command we are calling the mapping game methods
+            Game game=newGame.ToEntity();
+
+            //using this line we are going to add Genre
+            game.Genre=dbContext.Genres.Find(newGame.GenreId);
 
             // games.Add(game);
             //adding into the database
@@ -75,7 +86,22 @@ public static class GameEndpoints
 
             //save changes into the database
             dbContext.SaveChanges();
-            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id});
+            
+            //This is done to respond to the game to the web back so that not id of the genre of is send 
+            
+            /* This is moved to the gameMapping file and now will be called using the ToDto method*/
+            // GameDto gameDto= new(
+            //     game.Id,
+            //     game.Name,
+            //     //! is added bcoz if genre is null although it can never be null. This is added to end error from code
+            //     game.Genre!.Name,
+            //     game.Price,
+            //     game.ReleaseDate
+            // );
+            
+            //here game.ToDto() is added to import ToDto from mappingGame Extension
+            
+            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},game.ToDto());
 
 
         });
