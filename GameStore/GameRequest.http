@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
     "name":"Ninja 2",
-    "genre":"Fighting",
+    "genreid":2,
     "price":20.55,
     "releasedate":"2010-01-01"
 

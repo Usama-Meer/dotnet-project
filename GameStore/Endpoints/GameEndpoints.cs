@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
+using GameStore.Data;
 using GameStore.Dtos;
+using GameStore.Entities;
 namespace GameStore.Endpoints;
 
 public static class GameEndpoints
@@ -48,18 +50,32 @@ public static class GameEndpoints
         });
 
         //POST/games/
-        group.MapPost("/",(CreateGameDto newGame)=>{
+        group.MapPost("/",(CreateGameDto newGame, GameStoreContext dbContext)=>{
 
-            GameDto? game= new(
-                games.Count+1,
-                newGame.Name,
-                newGame.Genre,
-                newGame.Price,
-                newGame.ReleaseDate
-            );
 
-            games.Add(game);
-            return Results.CreatedAtRoute(getGameEndpoint,game);
+            // GameDto? game= new(
+            //     games.Count+1,
+            //     newGame.Name,
+            //     newGame.Genre,
+            //     newGame.Price,
+            //     newGame.ReleaseDate
+            // );
+
+            Game game=new(){
+                Name=newGame.Name,
+                Genre=dbContext.Genres.Find(newGame.GenreId),
+                GenreId=newGame.GenreId,
+                Price=newGame.Price,
+                ReleaseDate=newGame.ReleaseDate
+            };
+
+            // games.Add(game);
+            //adding into the database
+            dbContext.Games.Add(game);
+
+            //save changes into the database
+            dbContext.SaveChanges();
+            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id});
 
 
         });
