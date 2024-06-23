@@ -6,8 +6,10 @@ public record class UpdateGameDto
 ( 
 
     [Required][StringLength(100)] string Name,
-    [Required][StringLength(100)] string Genre,
+    [Required] int GenreId,
     [Required][Range(1,100)] decimal Price,
     [Required] DateOnly ReleaseDate    
 );
+
+
 

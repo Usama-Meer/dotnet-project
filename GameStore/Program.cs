@@ -33,7 +33,7 @@ app.mapRouteEndpoints();
 
 
 //creating database migrations
-app.MigrateDb();
+await app.MigrateDbAsync();
 
 app.Run();
 

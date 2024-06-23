@@ -41,6 +41,21 @@ public static class gameMapping
 
     //This is created to add Genre id
 
+       public static Game ToEntity(this UpdateGameDto game, int id)
+    {
+        //This is returning game to the GameEndpoint where method is called
+        return new Game()
+        {
+            Id=id,
+            Name=game.Name,
+            GenreId=game.GenreId,
+            Price=game.Price,
+            ReleaseDate=game.ReleaseDate
+        };
+    }
+
+    
+
     public static GameDetailDto ToDetailDto(this Game game)
     {
 
