@@ -44,7 +44,7 @@ public static class GameEndpoints
         group.MapGet("/",async (GameStoreContext dbContext)=>
         
         await dbContext.Games
-        .Include(game=>game.GenreId)
+        .Include(game=>game.Genre)
         .Select(game=>game.ToSummaryDto())
         .AsNoTracking()
         .ToListAsync()
@@ -78,7 +78,7 @@ public static class GameEndpoints
             // );
 
 
-            /* This is moved to the gameMapping file and now will be called using the ToEntity method*/
+            //This is moved to the gameMapping file and now will be called using the ToEntity method
             
             // Game game=new(){
             //     Name=newGame.Name,
@@ -124,7 +124,7 @@ public static class GameEndpoints
             
             //here game.ToDto() is added to import ToDto from mappingGame Extension
             
-            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},game.ToSummaryDto());
+            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},game.ToDetailDto());
 
 
         });
