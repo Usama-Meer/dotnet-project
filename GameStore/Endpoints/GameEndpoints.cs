@@ -3,12 +3,13 @@ using GameStore.Data;
 using GameStore.Dtos;
 using GameStore.Entities;
 using GameStore.Mapping;
+using Microsoft.EntityFrameworkCore;
 namespace GameStore.Endpoints;
 
 public static class GameEndpoints
 {
     public const string getGameEndpoint="games";
-    private static readonly List<GameDto> games=[
+    private static readonly List<GameSummaryDto> games=[
         new (
             1,
             "Street Fighter",
@@ -43,10 +44,13 @@ public static class GameEndpoints
         group.MapGet("/",()=>games);
 
         //GET/games/{id}
-        group.MapGet("{id}",(int id)=>{
-            GameDto? game=games.Find(game=>game.Id==id);
+        group.MapGet("{id}",(int id, GameStoreContext dbContext)=>{
+            // GameDto? game=games.Find(game=>game.Id==id);
+
+            //This is a new updated code that use Game object context
+            Game? game=dbContext.Games.Find(id);
             
-            return game is null?Results.NotFound():Results.Ok(game);
+            return game is null?Results.NotFound():Results.Ok(game.ToDetailDto());
             
         });
 
@@ -76,16 +80,27 @@ public static class GameEndpoints
             
             //using this command we are calling the mapping game methods
             Game game=newGame.ToEntity();
+            int id=2;
+            Game? games=dbContext.Games.Find(id);
+            if (games is not null){
+            dbContext.Games.Remove(games);
+            }
 
             //using this line we are going to add Genre
-            game.Genre=dbContext.Genres.Find(newGame.GenreId);
+            
+            //This line is removed bcoz Genre Name is added into the extension class already
+            // game.Genre=dbContext.Genres.Find(newGame.GenreId);
 
             // games.Add(game);
             //adding into the database
             dbContext.Games.Add(game);
+            
+
 
             //save changes into the database
             dbContext.SaveChanges();
+            
+
             
             //This is done to respond to the game to the web back so that not id of the genre of is send 
             
@@ -101,7 +116,7 @@ public static class GameEndpoints
             
             //here game.ToDto() is added to import ToDto from mappingGame Extension
             
-            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},game.ToDto());
+            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},game.ToSummaryDto());
 
 
         });

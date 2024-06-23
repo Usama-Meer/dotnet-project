@@ -2,7 +2,7 @@
 
 namespace GameStore.Dtos;
 
-public record class GameDto
+public record class GameSummaryDto
 ( 
     [Required]int Id,
     [Required][StringLength(100)] string Name,

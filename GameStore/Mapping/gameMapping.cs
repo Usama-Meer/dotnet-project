@@ -22,7 +22,7 @@ public static class gameMapping
     //here we are sending data to the GameDto
 
     //here we are creating ToDto method with Game(entity) as parameter and this will return the data for response
-    public static GameDto ToDto(this Game game)
+    public static GameSummaryDto ToSummaryDto(this Game game)
     {
 
         //returning data to the dto for response and this will be called in GameEndpoints
@@ -38,5 +38,22 @@ public static class gameMapping
         );
     }
 
-    
+
+    //This is created to add Genre id
+
+    public static GameDetailDto ToDetailDto(this Game game)
+    {
+
+        //returning data to the dto for response and this will be called in GameEndpoints
+        return new 
+        (
+            game.Id,
+            game.Name,
+            game.GenreId,
+            game.Price,
+            game.ReleaseDate
+
+
+        );
+    }
 }
