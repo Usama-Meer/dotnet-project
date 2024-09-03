@@ -1,8 +1,26 @@
+using AutoMapper;
 using GameStore.Dtos;
 using GameStore.Entities;
 
 namespace GameStore.Mapping;
 
+
+public class MappingConfig: Profile
+
+{
+    public MappingConfig()
+    {
+        CreateMap<Game, GameSummaryDto>().ReverseMap();
+        CreateMap<Game,GameDetailDto>().ReverseMap();
+        CreateMap<Game,CreateGameDto>().ReverseMap();
+        CreateMap<Game,UpdateGameDto>().ReverseMap();
+
+
+        
+    }
+
+    
+}
 public static class gameMapping
 {
     //This is an extension method that takes parameter as CreateGameDto and it return data to the entity(for storing in database)

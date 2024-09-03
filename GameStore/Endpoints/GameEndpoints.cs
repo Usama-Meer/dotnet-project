@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using AutoMapper;
 using GameStore.Data;
 using GameStore.Dtos;
 using GameStore.Entities;
@@ -66,7 +67,7 @@ public static class GameEndpoints
         });
 
         //POST/games/
-        group.MapPost("/",async (CreateGameDto newGame, GameStoreContext dbContext)=>{
+        group.MapPost("/",async (IMapper _mapper,CreateGameDto newGame, GameStoreContext dbContext)=>{
 
 
             // GameDto? game= new(
@@ -90,7 +91,10 @@ public static class GameEndpoints
 
             
             //using this command we are calling the mapping game methods
-            Game game=newGame.ToEntity();
+            // Game game=newGame.ToEntity();
+
+            
+            Game game=_mapper.Map<Game>(newGame);
             
             
 
@@ -124,8 +128,10 @@ public static class GameEndpoints
             
             //here game.ToDto() is added to import ToDto from mappingGame Extension
             
-            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},game.ToDetailDto());
+GameDetailDto gamedto=_mapper.Map<GameDetailDto>(game);
+            // return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},game.ToDetailDto());
 
+            return Results.CreatedAtRoute(getGameEndpoint, new {id=game.Id},gamedto);
 
         });
 
